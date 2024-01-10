@@ -1,19 +1,29 @@
 import './style.css'
-import data from "./data.json"
+import { getPhotosBySearch } from './Flickrapi'
 
 
 const imageList = document.querySelector("#Imagelist") as HTMLDivElement
 const searchImgForm = document.querySelector("#Searchimgform") as HTMLFormElement
 
-searchImgForm.addEventListener("submit",(e) => {
+searchImgForm.addEventListener("submit", async (e) => {
   e.preventDefault()
-  // const currUserSearch = e.target[0].value
+  const currUserSearch = e.target[0].value
+  let data;
+
+  try {
+    data = await getPhotosBySearch(currUserSearch)
+  } catch (error) {
+    console.log(error);
+  }
   console.log(data);
+  
   renderImages(data.photos.photo)
 })
 
 
 const renderImages = (images) => {
+  imageList.innerHTML = ""
+
   images.map((image) => {
     imageList.innerHTML += `
     <div class="col">       
