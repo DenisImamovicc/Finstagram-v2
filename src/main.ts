@@ -11,8 +11,7 @@ const API_KEY = "904552878bd72bf5143028f71ca3411e"
 let prevUserSearch : null | string = null
 let nexpagenum = 1
 
-window.addEventListener("scroll", async (e) =>{
-  
+window.addEventListener("scrollend", async (e) =>{
  if (Searchinput.value.length === 0 || Searchinput.value === prevUserSearch && window.scrollY > document.body.scrollHeight - 750) {
    nexpagenum++
    let data = await getPhotosBySearch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&text=${Searchinput.value}&per_page=10&page=${nexpagenum}&format=json&nojsoncallback=1`)
@@ -20,9 +19,8 @@ window.addEventListener("scroll", async (e) =>{
  }else{
    nexpagenum = 1
  }
-
+//Display loading el when user triggers next side req and disspar when req is done.Also show user total pages of result and curr page it loads
 })
-
 
 searchImgForm.addEventListener("submit", async (e) => {
   e.preventDefault()
