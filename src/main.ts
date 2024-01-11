@@ -4,20 +4,26 @@ import { getPhotosBySearch } from './Flickrapi'
 
 const imageList = document.querySelector("#Imagelist") as HTMLDivElement
 const searchImgForm = document.querySelector("#Searchimgform") as HTMLFormElement
+const submitBttn = document.querySelector("#submitBttn") as HTMLButtonElement
+
 
 searchImgForm.addEventListener("submit", async (e) => {
   e.preventDefault()
   const currUserSearch = e.target[0].value
   let data;
+  submitBttn.disabled = true
 
   try {
     data = await getPhotosBySearch(currUserSearch)
   } catch (error) {
     console.log(error);
+    submitBttn.disabled = false
   }
   console.log(data);
   
   renderImages(data.photos.photo)
+  submitBttn.disabled = false
+
 })
 
 
