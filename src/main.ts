@@ -6,11 +6,20 @@ const imageList = document.querySelector("#Imagelist") as HTMLDivElement
 const searchImgForm = document.querySelector("#Searchimgform") as HTMLFormElement
 const submitBttn = document.querySelector("#submitBttn") as HTMLButtonElement
 
+let prevUserSearch = null
 
 searchImgForm.addEventListener("submit", async (e) => {
   e.preventDefault()
   const currUserSearch = e.target[0].value
   let data;
+
+  if (e.target[0].value.length === 0 || currUserSearch === prevUserSearch) {
+    return alert("Get yo yeye ahh out of here")
+  }else{
+    prevUserSearch = currUserSearch
+  }
+  console.log(prevUserSearch);
+
   submitBttn.disabled = true
 
   try {
