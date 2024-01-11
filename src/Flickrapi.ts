@@ -1,5 +1,4 @@
-
-export const getPhotosBySearch = async <T>(url:T) => {
+export const getPhotosBySearch = async (url:string) => {
 	 const res = await fetch(url);
 
 	 if (!res.ok) {

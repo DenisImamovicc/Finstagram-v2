@@ -11,7 +11,7 @@ const API_KEY = "904552878bd72bf5143028f71ca3411e"
 let prevUserSearch : null | string = null
 let nexpagenum = 1
 
-window.addEventListener("scrollend", async (e) =>{
+window.addEventListener("scrollend", async () =>{
  if (Searchinput.value.length === 0 || Searchinput.value === prevUserSearch && window.scrollY > document.body.scrollHeight - 750) {
    nexpagenum++
    let data = await getPhotosBySearch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&text=${Searchinput.value}&per_page=10&page=${nexpagenum}&format=json&nojsoncallback=1`)
@@ -48,7 +48,6 @@ searchImgForm.addEventListener("submit", async (e) => {
 
 
 const renderImages = (images:PhotosData) => {
-
   images.photo.map((image:Photo) => {
     imageList.innerHTML += `
     <div class="col">       
@@ -63,7 +62,7 @@ const renderImages = (images:PhotosData) => {
   })
 }
 
-const renderTempAlert = (alertText:String,alertType:String) => {
+const renderTempAlert = (alertText:string,alertType:string) => {
   submitBttn.disabled = true
   alert.hidden = false
   alert.innerHTML = 
