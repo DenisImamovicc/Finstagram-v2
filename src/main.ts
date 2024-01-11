@@ -7,8 +7,22 @@ const searchImgForm = document.querySelector("#Searchimgform") as HTMLFormElemen
 const submitBttn = document.querySelector("#submitBttn") as HTMLButtonElement
 const Searchinput = document.querySelector("#Searchinput") as HTMLInputElement
 
-
+const API_KEY = "904552878bd72bf5143028f71ca3411e"
 let prevUserSearch : null | string = null
+let nexpagenum = 1
+
+window.addEventListener("scroll", async (e) =>{
+  
+ if (Searchinput.value.length === 0 || Searchinput.value === prevUserSearch && window.scrollY > document.body.scrollHeight - 750) {
+   nexpagenum++
+   let data = await getPhotosBySearch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&text=${Searchinput.value}&per_page=10&page=${nexpagenum}&format=json&nojsoncallback=1`)
+   renderImages(data.photos)
+ }else{
+   nexpagenum = 1
+ }
+
+})
+
 
 searchImgForm.addEventListener("submit", async (e) => {
   e.preventDefault()
@@ -22,13 +36,13 @@ searchImgForm.addEventListener("submit", async (e) => {
   submitBttn.disabled = true
 
   try {
-    data = await getPhotosBySearch(Searchinput.value)
+    data = await getPhotosBySearch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&text=${Searchinput.value}&per_page=10&page=1&format=json&nojsoncallback=1`)
   } catch (error) {
     console.log(error);
     submitBttn.disabled = false
   }
   console.log(data);
-  
+  imageList.innerHTML = ""
   renderImages(data.photos)
   submitBttn.disabled = false
 
@@ -36,7 +50,6 @@ searchImgForm.addEventListener("submit", async (e) => {
 
 
 const renderImages = (images:PhotosData) => {
-  imageList.innerHTML = ""
 
   images.photo.map((image:Photo) => {
     imageList.innerHTML += `
