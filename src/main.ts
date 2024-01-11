@@ -1,12 +1,11 @@
 import './style.css'
 import { getPhotosBySearch } from './Flickrapi'
-
-
+const alert = document.querySelector("#alert") as HTMLDivElement
 const imageList = document.querySelector("#Imagelist") as HTMLDivElement
 const searchImgForm = document.querySelector("#Searchimgform") as HTMLFormElement
 const submitBttn = document.querySelector("#submitBttn") as HTMLButtonElement
 
-let prevUserSearch = null
+let prevUserSearch;
 
 searchImgForm.addEventListener("submit", async (e) => {
   e.preventDefault()
@@ -14,12 +13,10 @@ searchImgForm.addEventListener("submit", async (e) => {
   let data;
 
   if (e.target[0].value.length === 0 || currUserSearch === prevUserSearch) {
-    return alert("Get yo yeye ahh out of here")
+    return renderTempAlert("Cannot send empty or previous search word!","alert-warning")
   }else{
     prevUserSearch = currUserSearch
   }
-  console.log(prevUserSearch);
-
   submitBttn.disabled = true
 
   try {
@@ -51,4 +48,22 @@ const renderImages = (images) => {
     </div>   
   `
   })
+}
+
+
+const renderTempAlert = (alertText,alertType) => {
+  submitBttn.disabled = true
+  alert.hidden = false
+  alert.innerHTML = 
+  `
+  <span>
+    ${alertText}
+  </span>
+  `
+  alert.className = `alert ${alertType} text-center`
+  setTimeout(() => {
+    submitBttn.disabled = false
+    alert.hidden = true
+    alert.innerHTML = ""
+  }, 3000);
 }
