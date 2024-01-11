@@ -1,4 +1,4 @@
-const API_KEY = "77be001d5a2779c8cf3968f7e92862f6"
+const API_KEY = "904552878bd72bf5143028f71ca3411e"
 const API_SECRET = "b41a48685433caf6"
 
 export const getPhotosBySearch = async <T>(searchInput:T) => {
