@@ -1,52 +1,51 @@
-import './style.css'
-import { getPhotosBySearch } from './Flickrapi'
-import {FlickrResponse, Photo, PhotosData} from "./types"
-const alert = document.querySelector("#alert") as HTMLDivElement
-const imageList = document.querySelector("#Imagelist") as HTMLDivElement
-const searchImgForm = document.querySelector("#Searchimgform") as HTMLFormElement
-const submitBttn = document.querySelector("#submitBttn") as HTMLButtonElement
-const Searchinput = document.querySelector("#Searchinput") as HTMLInputElement
-const Listloader = document.querySelector("#Listloader") as HTMLDivElement
+import "./style.css";
+import { getPhotosBySearch } from "./Flickrapi";
+import { FlickrResponse, Photo, PhotosData } from "./types";
+import {
+  Listloader,
+  Searchinput,
+  alert,
+  imageList,
+  searchImgForm,
+  submitBttn,
+} from "./dom-handlers";
 
-const API_KEY = import.meta.env.VITE_APP_FLICKR_API_KEY
-const FLICKR_URL = import.meta.env.VITE_APP_FLICKR_URL
-let prevUserSearch : null | string = null
-let FlickrData:FlickrResponse
+const API_KEY = import.meta.env.VITE_APP_FLICKR_API_KEY;
+const FLICKR_URL = import.meta.env.VITE_APP_FLICKR_URL;
+let prevUserSearch: null | string = null;
+let FlickrData: FlickrResponse;
 
-window.addEventListener("scrollend", async () => {
-  const preRenderThreshold  = 250
- if (window.scrollY + window.innerHeight > document.documentElement.scrollHeight - preRenderThreshold ) {
-  Listloader.hidden = false
-   let data = await getPhotosBySearch(`${FLICKR_URL}&api_key=${API_KEY}&text=${Searchinput.value}&per_page=10&page=${++FlickrData.photos.page}&format=json&nojsoncallback=1`)
-   renderImages(data.photos)
-   Listloader.hidden = true
- }
-})
+window.addEventListener("scrollend", () => handleInfinityScroll());
 
 searchImgForm.addEventListener("submit", async (e) => {
-  e.preventDefault()
+  e.preventDefault();
   if (Searchinput.value.length === 0 || Searchinput.value === prevUserSearch) {
-    return renderTempAlert("Cannot send empty or previous search word!","alert-warning")
-  }else{
-    prevUserSearch = Searchinput.value
+    return renderTempAlert(
+      "Cannot send empty or previous search word!",
+      "alert-warning"
+    );
+  } else {
+    prevUserSearch = Searchinput.value;
   }
-  submitBttn.disabled = true
-  imageList.innerHTML = ""
-  Listloader.hidden = false
+  submitBttn.disabled = true;
+  imageList.innerHTML = "";
+  Listloader.hidden = false;
   try {
-    FlickrData = await getPhotosBySearch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&text=${Searchinput.value}&per_page=10&page=1&format=json&nojsoncallback=1`)
+    FlickrData = await getPhotosBySearch(
+      `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&text=${Searchinput.value}&per_page=10&page=1&format=json&nojsoncallback=1`
+    );
   } catch (error) {
     console.log(error);
-    submitBttn.disabled = false
+    submitBttn.disabled = false;
   }
   console.log(FlickrData);
-  renderImages(FlickrData.photos)
-  submitBttn.disabled = false
-  Listloader.hidden = true
-})
+  renderImages(FlickrData.photos);
+  submitBttn.disabled = false;
+  Listloader.hidden = true;
+});
 
-const renderImages = (images:PhotosData) => {
-  images.photo.map((image:Photo) => {
+const renderImages = (images: PhotosData) => {
+  images.photo.map((image: Photo) => {
     imageList.innerHTML += `
     <div class="col">       
       <div class="card m-2 h-100">
@@ -56,23 +55,40 @@ const renderImages = (images:PhotosData) => {
         </div>
       </div>
     </div>   
-  `
-  })
-}
+  `;
+  });
+};
 
-const renderTempAlert = (alertText:string,alertType:string) => {
-  submitBttn.disabled = true
-  alert.hidden = false
-  alert.innerHTML = 
-  `
+const renderTempAlert = (alertText: string, alertType: string) => {
+  submitBttn.disabled = true;
+  alert.hidden = false;
+  alert.innerHTML = `
   <span>
     ${alertText}
   </span>
-  `
-  alert.className = `alert ${alertType} text-center`
+  `;
+  alert.className = `alert ${alertType} text-center`;
   setTimeout(() => {
-    submitBttn.disabled = false
-    alert.hidden = true
-    alert.innerHTML = ""
+    submitBttn.disabled = false;
+    alert.hidden = true;
+    alert.innerHTML = "";
   }, 3000);
-}
+};
+
+const handleInfinityScroll = async () => {
+  const preRenderThreshold = 250;
+  if (
+    window.scrollY + window.innerHeight >
+    document.documentElement.scrollHeight - preRenderThreshold
+  ) {
+    Listloader.hidden = false;
+    let data = await getPhotosBySearch(
+      `${FLICKR_URL}&api_key=${API_KEY}&text=${
+        Searchinput.value
+      }&per_page=10&page=${++FlickrData.photos
+        .page}&format=json&nojsoncallback=1`
+    );
+    renderImages(data.photos);
+    Listloader.hidden = true;
+  }
+};
