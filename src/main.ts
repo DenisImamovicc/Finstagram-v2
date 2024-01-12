@@ -14,7 +14,8 @@ let prevUserSearch : null | string = null
 let FlickrData:FlickrResponse
 
 window.addEventListener("scrollend", async () => {
- if (window.scrollY + window.innerHeight > document.documentElement.scrollHeight - 200) {
+  const preRenderThreshold  = 250
+ if (window.scrollY + window.innerHeight > document.documentElement.scrollHeight - preRenderThreshold ) {
   Listloader.hidden = false
    let data = await getPhotosBySearch(`${FLICKR_URL}&api_key=${API_KEY}&text=${Searchinput.value}&per_page=10&page=${++FlickrData.photos.page}&format=json&nojsoncallback=1`)
    renderImages(data.photos)
