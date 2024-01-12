@@ -12,7 +12,9 @@ let prevUserSearch : null | string = null
 let nexpagenum = 1
 
 window.addEventListener("scrollend", async () =>{
- if (Searchinput.value.length === 0 || Searchinput.value === prevUserSearch && window.scrollY > document.body.scrollHeight - 750) {
+  console.log(window.scrollY,window.innerHeight);
+  
+ if (Searchinput.value.length === 0 || Searchinput.value === prevUserSearch && window.scrollY + window.innerHeight > document.documentElement.scrollHeight - 200) {
    nexpagenum++
    let data = await getPhotosBySearch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&text=${Searchinput.value}&per_page=10&page=${nexpagenum}&format=json&nojsoncallback=1`)
    renderImages(data.photos)
