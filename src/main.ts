@@ -1,32 +1,28 @@
 import './style.css'
 import { getPhotosBySearch } from './Flickrapi'
-import {Photo, PhotosData} from "./types"
+import {FlickrResponse, Photo, PhotosData} from "./types"
 const alert = document.querySelector("#alert") as HTMLDivElement
 const imageList = document.querySelector("#Imagelist") as HTMLDivElement
 const searchImgForm = document.querySelector("#Searchimgform") as HTMLFormElement
 const submitBttn = document.querySelector("#submitBttn") as HTMLButtonElement
 const Searchinput = document.querySelector("#Searchinput") as HTMLInputElement
 
-const API_KEY = "904552878bd72bf5143028f71ca3411e"
+const API_KEY = import.meta.env.VITE_APP_FLICKR_API_KEY
+const FLICKR_URL = import.meta.env.VITE_APP_FLICKR_URL
 let prevUserSearch : null | string = null
-let nexpagenum = 1
+let FlickrData:FlickrResponse
 
 window.addEventListener("scrollend", async () =>{
-  console.log(window.scrollY,window.innerHeight);
-  
- if (Searchinput.value.length === 0 || Searchinput.value === prevUserSearch && window.scrollY + window.innerHeight > document.documentElement.scrollHeight - 200) {
-   nexpagenum++
-   let data = await getPhotosBySearch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&text=${Searchinput.value}&per_page=10&page=${nexpagenum}&format=json&nojsoncallback=1`)
+ if (window.scrollY + window.innerHeight > document.documentElement.scrollHeight - 200) {
+   let data = await getPhotosBySearch(`${FLICKR_URL}&api_key=${API_KEY}&text=${Searchinput.value}&per_page=10&page=${++FlickrData.photos.page}&format=json&nojsoncallback=1`)
    renderImages(data.photos)
- }else{
-   nexpagenum = 1
  }
 //Display loading el when user triggers next side req and disspar when req is done.Also show user total pages of result and curr page it loads
 })
 
 searchImgForm.addEventListener("submit", async (e) => {
   e.preventDefault()
-  let data;
+
 
   if (Searchinput.value.length === 0 || Searchinput.value === prevUserSearch) {
     return renderTempAlert("Cannot send empty or previous search word!","alert-warning")
@@ -36,14 +32,14 @@ searchImgForm.addEventListener("submit", async (e) => {
   submitBttn.disabled = true
 
   try {
-    data = await getPhotosBySearch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&text=${Searchinput.value}&per_page=10&page=1&format=json&nojsoncallback=1`)
+    FlickrData = await getPhotosBySearch(`https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${API_KEY}&text=${Searchinput.value}&per_page=10&page=1&format=json&nojsoncallback=1`)
   } catch (error) {
     console.log(error);
     submitBttn.disabled = false
   }
-  console.log(data);
+  console.log(FlickrData);
   imageList.innerHTML = ""
-  renderImages(data.photos)
+  renderImages(FlickrData.photos)
   submitBttn.disabled = false
 
 })
