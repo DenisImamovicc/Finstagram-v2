@@ -1,57 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <!-- <link rel="icon" type="image/svg+xml" href="" /> -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Finstagram V2</title>
-  </head>
-  <body class="bg-dark text-white vh-100">
-    <div id="app" >
-      <main class="">
-        <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
-          <div class="container-fluid">
-            <a class="navbar-brand">Finstagram</a>
-            <form class="d-flex" role="search" id="Searchimgform">
-              <input class="form-control me-2" type="search" placeholder="Search images" aria-label="Search" id="Searchinput">
-              <button class="btn btn-outline-success" type="submit" id="submitBttn">Search</button>
-            </form>
-          </div>
-        </nav>
-        <div class="alert alert-warning text-center" role="alert" hidden id="alert">
-        </div>
-        <div id="container" class="text-center">
-          <div id="Imagelist" class="m-3 row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 text-start ">
 
-          </div>
-          <div class="spinner-border p-1 " role="status" hidden id="Listloader">
-            <span class="visually-hidden">Loading...</span>
+<head>
+  <meta charset="UTF-8" />
+  <!-- <link rel="icon" type="image/svg+xml" href="" /> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finstagram V2</title>
+</head>
+
+<body class="bg-dark text-white vh-100">
+  <div id="app">
+    <main class="">
+      <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
+        <div class="container-fluid">
+          <a class="navbar-brand">Finstagram</a>
+          <form class="d-flex" role="search" id="Searchimgform">
+            <input class="form-control me-2" type="search" placeholder="Search images" aria-label="Search"
+              id="Searchinput">
+            <button class="btn btn-outline-success" type="submit" id="submitBttn">Search</button>
+          </form>
+        </div>
+      </nav>
+      <div class="alert alert-warning text-center" role="alert" hidden id="alert">
+      </div>
+      <div id="container" class="text-center">
+        <div id="Imagelist" class="m-3 row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 text-start ">
+
+        </div>
+        <!-- Button trigger modal -->
+
+        <!-- Modal -->
+        <div class="modal fade text-dark" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content" id="modalContent">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="detailsModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                ...
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
           </div>
         </div>
-        <footer class="text-center mb-3  w-100">
-          <hr>
-          Made by
-          <a
-            href="https://github.com/DenisImamovicc"
-            class="link-underline-opacity-0 link-info link-underline-opacity-75-hover"
-            target="_blank"
-          >
-            Deanken™️
-          </a>
-        </footer>
-      </main>
-    </div>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-      crossorigin="anonymous"
-    />
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-      crossorigin="anonymous"
-    ></script>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+        <div class="spinner-border p-1 " role="status" hidden id="Listloader">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <footer class="text-center mb-3  w-100">
+        <hr>
+        Made by
+        <a href="https://github.com/DenisImamovicc"
+          class="link-underline-opacity-0 link-info link-underline-opacity-75-hover" target="_blank">
+          Deanken™️
+        </a>
+      </footer>
+    </main>
+  </div>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
 </html>

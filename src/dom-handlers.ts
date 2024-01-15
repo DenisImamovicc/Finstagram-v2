@@ -4,6 +4,8 @@ const searchImgForm = document.querySelector("#Searchimgform") as HTMLFormElemen
 const submitBttn = document.querySelector("#submitBttn") as HTMLButtonElement;
 const Searchinput = document.querySelector("#Searchinput") as HTMLInputElement;
 const Listloader = document.querySelector("#Listloader") as HTMLDivElement;
+const modalContent = document.querySelector("#modalContent") as HTMLElement;
+
 
 export { 
     alert, 
@@ -11,5 +13,6 @@ export {
     searchImgForm, 
     submitBttn, 
     Searchinput, 
-    Listloader 
+    Listloader,
+    modalContent
 };

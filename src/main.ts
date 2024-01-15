@@ -8,6 +8,7 @@ import {
   imageList,
   searchImgForm,
   submitBttn,
+  modalContent
 } from "./dom-handlers";
 
 const API_KEY = import.meta.env.VITE_APP_FLICKR_API_KEY;
@@ -16,6 +17,29 @@ let prevUserSearch: null | string = null;
 let FlickrData: FlickrResponse;
 
 window.addEventListener("scrollend", () => handleInfinityScroll());
+
+imageList.addEventListener("click", async (e: MouseEvent) => {
+  if (!e.target) {
+    return;
+  }
+
+  try {
+    const parentElement = (e.target as HTMLElement).parentElement;
+    
+    if (!parentElement || !parentElement.dataset.id) {
+      return;
+    }
+
+    const data = await getPhotosBySearch(`https://www.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=${API_KEY}&photo_id=${parentElement.dataset.id}&format=json&nojsoncallback=1`);
+    renderModal(data.photo);
+  } catch (error) {
+    renderTempAlert(
+      `Server not responding! ${error}`,
+      "alert-danger"
+    );
+  }
+});
+
 
 searchImgForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -51,15 +75,32 @@ const renderImages = (images: PhotosData) => {
   images.photo.map((image: Photo) => {
     imageList.innerHTML += `
     <div class="col">       
-      <div class="card m-2 h-100">
+      <div class="card m-2 h-100" id="card"  data-id="${image.id}">
         <img src="https://live.staticflickr.com/${image.server}/${image.id}_${image.secret}.jpg" class="card-img w-100 h-100" alt="${image.title}">
-        <div class="card-img-overlay ">
-          <h5 class="card-title bg-dark text-white p-1 rounded d-inline" text-break>${image.title}</h5>
-        </div>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailsModal">
+        Show more
+        </button>
       </div>
     </div>   
   `;
   });
+};
+
+const renderModal = (images: any) => {
+  modalContent.innerHTML = `
+    <div class="modal-header d-flex flex-column align-items-start">
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <h1 class="modal-title fs-5" id="detailsModalLabel">${images.title._content}</h1>
+      <h2 class="modal-title fs-6"  text-muted" >By: ${images.owner.username}</h2>
+    </div>
+    <div class="modal-body">
+    <img src="https://live.staticflickr.com/${images.server}/${images.id}_${images.secret}.jpg" class="card-img w-100 h-100" alt="${images.title._content}">
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Download</button>
+      <button type="button" class="btn btn-primary">Save Photo</button>
+  </div>
+  `
 };
 
 const renderTempAlert = (alertText: string, alertType: string) => {
