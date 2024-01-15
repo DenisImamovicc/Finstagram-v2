@@ -36,7 +36,10 @@ searchImgForm.addEventListener("submit", async (e) => {
     );
   } catch (error) {
     console.log(error);
-    submitBttn.disabled = false;
+    return renderTempAlert(
+      `Server not responding!,${error}`,
+      "alert-danger"
+    );
   }
   console.log(FlickrData);
   renderImages(FlickrData.photos);
