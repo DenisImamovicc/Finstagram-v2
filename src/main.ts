@@ -8,7 +8,7 @@ import {
   imageList,
   searchImgForm,
   submitBttn,
-  modalContent
+  modalContent,
 } from "./dom-handlers";
 
 const API_KEY = import.meta.env.VITE_APP_FLICKR_API_KEY;
@@ -25,21 +25,19 @@ imageList.addEventListener("click", async (e: MouseEvent) => {
 
   try {
     const parentElement = (e.target as HTMLElement).parentElement;
-    
+
     if (!parentElement || !parentElement.dataset.id) {
       return;
     }
 
-    const data = await getPhotosBySearch(`https://www.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=${API_KEY}&photo_id=${parentElement.dataset.id}&format=json&nojsoncallback=1`);
+    const data = await getPhotosBySearch(
+      `https://www.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=${API_KEY}&photo_id=${parentElement.dataset.id}&format=json&nojsoncallback=1`
+    );
     renderModal(data.photo);
   } catch (error) {
-    renderTempAlert(
-      `Server not responding! ${error}`,
-      "alert-danger"
-    );
+    renderTempAlert(`Server not responding! ${error}`, "alert-danger");
   }
 });
-
 
 searchImgForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -60,10 +58,7 @@ searchImgForm.addEventListener("submit", async (e) => {
     );
   } catch (error) {
     console.log(error);
-    return renderTempAlert(
-      `Server not responding!,${error}`,
-      "alert-danger"
-    );
+    return renderTempAlert(`Server not responding!,${error}`, "alert-danger");
   }
   console.log(FlickrData);
   renderImages(FlickrData.photos);
@@ -92,15 +87,19 @@ const renderModal = (images: any) => {
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       <h1 class="modal-title fs-5" id="detailsModalLabel">${images.title._content}</h1>
       <h2 class="modal-title fs-6"  text-muted" >By: ${images.owner.username}</h2>
+      <p>Views: ${images.views}</p>
     </div>
     <div class="modal-body">
-    <img src="https://live.staticflickr.com/${images.server}/${images.id}_${images.secret}.jpg" class="card-img w-100 h-100" alt="${images.title._content}">
+    <a href="${images.urls.url[0]._content}" target="_blank">
+      <img src="https://live.staticflickr.com/${images.server}/${images.id}_${images.secret}.jpg" class="card-img w-100 h-100" alt="${images.title._content}">
+    </a>
+    <h3 class="modal-title fs-6"  text-muted" >${images.description._content}</h3>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Download</button>
-      <button type="button" class="btn btn-primary">Save Photo</button>
+    <button type="button" class="btn btn-secondary">Download</button>
+    <button type="button" class="btn btn-primary">Save Photo</button>
   </div>
-  `
+  `;
 };
 
 const renderTempAlert = (alertText: string, alertType: string) => {
