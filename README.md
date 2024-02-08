@@ -1,1 +1,1 @@
-![Preview_img](https://github.com/DenisImamovicc/Finstagram-v2/assets/60396488/57847d83-9c8a-4a4a-8fd3-971b728e8bbc)
+![Finstagramv2](https://github.com/DenisImamovicc/Finstagram-v2/assets/60396488/59a6573e-5568-4a09-88c3-dcd70fe97262)
